@@ -21,8 +21,20 @@ class AI:
     """
 
     def turn(self) -> (str, int, int):
-        """ self.message = "hello python"
-        self.value = random.randint(1,10)
-        self.direction = random.choice(list(Direction)).value """
+        ant = self.game.ant
+        x = ant.currentX
+        y = ant.currentY
+
+        if ant.antType == AntType.SARBAAZ:
+            pass
+        elif ant.antType == AntType.KARGAR:
+            pass
+
+        # Move where
         self.direction = Direction.UP.value
-        return (self.message, self.value, self.direction)
+
+        # Send Message
+        self.message = "Daram Mimiram =)"
+        self.value = 1
+
+        return self.message, self.value, self.direction
