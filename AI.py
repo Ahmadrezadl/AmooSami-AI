@@ -3,6 +3,12 @@ import random
 import json
 from typing import *
 
+CENTER = Direction.CENTER.value
+LEFT = Direction.LEFT.value
+RIGHT = Direction.RIGHT.value
+UP = Direction.UP.value
+DOWN = Direction.DOWN.value
+
 
 class AI:
     def __init__(self):
@@ -22,21 +28,25 @@ class AI:
 
     def turn(self) -> (str, int, int):
         # Fill these fields to return
-        message = None
-        message_value = 0
-        direction = Direction.CENTER.value
+        message: str = None
+        message_value: int = 0
+        direction: int = Direction.CENTER.value
 
         ant = self.game.ant
         x = ant.currentX
         y = ant.currentY
+        baseX = self.game.baseX
+        baseY = self.game.baseX
 
-        if ant.antType == AntType.SARBAAZ:
-            pass
-        elif ant.antType == AntType.KARGAR:
+        # Sarbaaz
+        if ant.antType == 0:
+            direction = random.randint(0, 4)
+        # Karegar
+        elif ant.antType == 1:
             pass
 
         # Just for test:
         # Move random
-        direction = random.randint(0, 4)
+        # direction = random.randint(0, 4)
 
         return message, message_value, direction
