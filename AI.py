@@ -26,15 +26,19 @@ class AI:
         y = ant.currentY
 
         if ant.antType == AntType.SARBAAZ:
-            pass
+            self.message = "Sarbazam =)"
         elif ant.antType == AntType.KARGAR:
-            pass
+            self.message = "kargaram =)"
 
         # Move where
-        self.direction = Direction.UP.value
-
-        # Send Message
-        self.message = "Daram Mimiram =)"
-        self.value = 1
+        rand = random.randint(1, 4)
+        if rand == 1:
+            self.direction = Direction.UP.value
+        if rand == 2:
+            self.direction = Direction.DOWN.value
+        if rand == 3:
+            self.direction = Direction.LEFT.value
+        if rand == 4:
+            self.direction = Direction.RIGHT.value
 
         return self.message, self.value, self.direction
