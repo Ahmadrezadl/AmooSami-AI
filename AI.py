@@ -21,24 +21,22 @@ class AI:
     """
 
     def turn(self) -> (str, int, int):
+        # Fill these fields to return
+        message = None
+        message_value = 0
+        direction = Direction.CENTER.value
+
         ant = self.game.ant
         x = ant.currentX
         y = ant.currentY
 
         if ant.antType == AntType.SARBAAZ:
-            self.message = "Sarbazam =)"
+            pass
         elif ant.antType == AntType.KARGAR:
-            self.message = "kargaram =)"
+            pass
 
-        # Move where
-        rand = random.randint(1, 4)
-        if rand == 1:
-            self.direction = Direction.UP.value
-        if rand == 2:
-            self.direction = Direction.DOWN.value
-        if rand == 3:
-            self.direction = Direction.LEFT.value
-        if rand == 4:
-            self.direction = Direction.RIGHT.value
+        # Just for test:
+        # Move random
+        direction = random.randint(0, 4)
 
-        return self.message, self.value, self.direction
+        return message, message_value, direction
