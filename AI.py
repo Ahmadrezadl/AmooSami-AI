@@ -15,7 +15,7 @@ class AI:
     def __init__(self):
         # Current Game State
         self.game: Game = None
-        self.turn: int = -1
+        self.turn_number: int = -1
         self.vision = []
 
     """
@@ -35,37 +35,37 @@ class AI:
         y = ant.currentY
         base_x = self.game.baseX
         base_y = self.game.baseX
-        self.turn = self.turn + 1
+        self.turn_number = self.turn_number + 1
 
         if not self.vision:
             for i in range(self.game.mapHeight):
                 new_line = []
                 for j in range(self.game.mapWidth):
                     if base_x == j and base_y == i:
-                        new_line.append((BASE, self.turn))
+                        new_line.append((BASE, self.turn_number))
                     else:
                         cell = self.game.ant.getMapCell(j, i)
                         if not cell:
-                            new_line.append((UNKNOWN, self.turn))
+                            new_line.append((UNKNOWN, self.turn_number))
                         elif cell.type == CellType.WALL.value:
-                            new_line.append((WALL, self.turn))
+                            new_line.append((WALL, self.turn_number))
                         elif cell.type == CellType.BASE.value:
-                            new_line.append((ENEMY_BASE, self.turn))
+                            new_line.append((ENEMY_BASE, self.turn_number))
                         elif cell.resource_value != 0:
                             if cell.resource_type == ResourceType.BREAD.value:
-                                new_line.append((BREAD, self.turn))
+                                new_line.append((BREAD, self.turn_number))
                             else:
-                                new_line.append((GRASS, self.turn))
+                                new_line.append((GRASS, self.turn_number))
                         elif not cell.ants:
-                            new_line.append((EMPTY, self.turn))
+                            new_line.append((EMPTY, self.turn_number))
                         else:
                             maximum = TEAM_KARGAR
                             for a in cell.ants:
-                                if a.antType == AntType.KARGAR and a.antTeam == AntTeam.ALLIED:
+                                if a.antType == AntType.KARGAR.value and a.antTeam == AntTeam.ALLIED.value:
                                     this = TEAM_KARGAR
-                                elif a.antType == AntType.SARBAAZ and a.antTeam == AntTeam.ALLIED:
+                                elif a.antType == AntType.SARBAAZ.value and a.antTeam == AntTeam.ALLIED.value:
                                     this = TEAM_SARBAZ
-                                elif a.antType == AntType.KARGAR and a.antTeam == AntTeam.ENEMY:
+                                elif a.antType == AntType.KARGAR.value and a.antTeam == AntTeam.ENEMY.value:
                                     this = ENEMY_KARGAR
                                 else:
                                     this = ENEMY_SARBAZ
@@ -73,7 +73,7 @@ class AI:
                                 if this > maximum:
                                     maximum = this
 
-                            new_line.append((maximum, self.turn))
+                            new_line.append((maximum, self.turn_number))
 
                 self.vision.append(new_line)
 
@@ -82,4 +82,5 @@ class AI:
         elif ant.antType == AntType.KARGAR.value:
             pass
 
+        print(self.vision)
         return message, message_value, direction
