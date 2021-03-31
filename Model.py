@@ -10,7 +10,7 @@ class Ant:
     currentY: int
     health: int
     visibleMap: "Map"
-    viewDistance: int
+    attackDistance: int
 
     def __init__(
         self,
@@ -21,7 +21,7 @@ class Ant:
         currentY: int,
         health: int,
         visibleMap: "Map",
-        viewDistance: int,
+        attackDistance: int,
     ):
         self.antType = ant_type
         self.antTeam = ant_team
@@ -30,7 +30,7 @@ class Ant:
         self.currentResource = currentResource
         self.visibleMap = visibleMap
         self.health = health
-        self.viewDistance = viewDistance
+        self.attackDistance = attackDistance
 
     @classmethod
     def createAntXY(cls, ant_type: int, ant_team: int, currentX: int, currentY: int):
@@ -43,7 +43,7 @@ class Ant:
         ant_team: int,
         currentState: "CurrentState",
         visibleMap: "Map",
-        viewDistance: int,
+        attackDistance: int,
     ):
         return cls(
             ant_type,
@@ -55,7 +55,7 @@ class Ant:
             currentState.current_y,
             currentState.health,
             visibleMap,
-            viewDistance,
+            attackDistance,
         )
 
     def getMapCell(self, x, y):
@@ -93,7 +93,7 @@ class Map:
     def getCell(self, dx: int, dy: int):
         x = self.antCurrentX + dx
         y = self.antCurrentY + dy
-        if (x < 0 | x >= self.width | y < 0 | y >= self.height):
+        if (x < 0 or x >= self.width or y < 0 or y >= self.height):
             return None
         return self.cells[x][y]
 
@@ -102,7 +102,7 @@ class Cell:
     y = 0
     type = 0
     resource_value = 0
-    resrouce_type = 0
+    resource_type = 0
     ants = []
 
     def __init__(self, x, y, type, resource_value, resource_type):

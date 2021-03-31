@@ -25,6 +25,10 @@ class AI:
     """
 
     def turn(self) -> (str, int, int):
+        print(self.game.mapWidth)
+        print(self.game.mapHeight)
+        print(self.game.ant.currentX)
+        print(self.game.ant.currentY)
         # Fill these fields to return
         message: str = None
         message_value: int = 0
@@ -44,14 +48,14 @@ class AI:
                     if base_x == j and base_y == i:
                         new_line.append((BASE, self.turn_number))
                     else:
-                        cell = self.game.ant.getMapCell(j, i)
+                        cell = self.game.ant.visibleMap.cells[i][j]
                         if not cell:
                             new_line.append((UNKNOWN, self.turn_number))
                         elif cell.type == CellType.WALL.value:
                             new_line.append((WALL, self.turn_number))
                         elif cell.type == CellType.BASE.value:
                             new_line.append((ENEMY_BASE, self.turn_number))
-                        elif cell.resource_value != 0:
+                        elif cell.resource_type != 0:
                             if cell.resource_type == ResourceType.BREAD.value:
                                 new_line.append((BREAD, self.turn_number))
                             else:
