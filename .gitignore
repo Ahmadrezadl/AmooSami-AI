@@ -5,3 +5,4 @@ Controller.spec
 .idea
 
 .vscode/*
+*.out

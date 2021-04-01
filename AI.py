@@ -62,14 +62,11 @@ class AI:
                     self.vision[i][j].append((WALL, self.turn_number))
                 elif cell.type == CellType.BASE.value:
                     self.vision[i][j].append((ENEMY_BASE, self.turn_number))
-                elif cell.resource_type is not None:
-                    if cell.resource_type == ResourceType.BREAD.value:
-                        self.vision[i][j].append((BREAD, self.turn_number))
-                    else:
-                        self.vision[i][j].append((GRASS, self.turn_number))
-                elif not cell.ants:
-                    self.vision[i][j].append((EMPTY, self.turn_number))
-                else:
+                elif cell.resource_type == ResourceType.BREAD.value:
+                    self.vision[i][j].append((BREAD, self.turn_number))
+                elif cell.resource_type == ResourceType.GRASS.value:
+                    self.vision[i][j].append((GRASS, self.turn_number))
+                elif cell.ants:
                     maximum = TEAM_KARGAR
                     for a in cell.ants:
                         if a.antType == AntType.KARGAR.value and a.antTeam == AntTeam.ALLIED.value:
@@ -82,18 +79,24 @@ class AI:
                             this = ENEMY_SARBAZ
                         if this > maximum:
                             maximum = this
-
                     self.vision[i][j].append((maximum, self.turn_number))
-                
+                else:
+                    self.vision[i][j].append((EMPTY, self.turn_number))
+
                 prune(self.vision[i][j])
 
 
+        print("turn: ", self.turn_number)
+        for row in self.vision:
+            for cell in row:
+                print(cell[0][0], end=' ')
+            print()
         if ant.antType == AntType.SARBAAZ.value:
-            
             direction = random.randint(0, 4)
         elif ant.antType == AntType.KARGAR.value:
-            pass
+            direction = random.randint(0, 4)
 
-        for i in self.vision:
-            print(i)
+        # for i in self.vision:
+            # print(i)
+        # print(message, message_value, direction)
         return message, message_value, direction
