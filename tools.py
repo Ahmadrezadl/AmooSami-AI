@@ -1,13 +1,16 @@
-from consts import BUILDINGS, ENTITIES, EMPTY, RESOURCES
+from consts import BUILDINGS, ENTITIES, EMPTY, RESOURCES, EMPTIES
 
 
-def beat(ob_f, ob_s):
-    if ob_s in BUILDINGS:
+def beat(new_object, old_object):
+    if old_object in BUILDINGS:
         return False
-    if ob_f in ENTITIES and ob_s in ENTITIES:
+    if old_object in EMPTIES:
         return True
-    if ob_f == EMPTY and ob_s in RESOURCES:
+    if new_object in ENTITIES and old_object in ENTITIES:
         return True
+    if (new_object == EMPTY or new_object == RESOURCES) and old_object in RESOURCES:
+        return True
+
     return False
 
 

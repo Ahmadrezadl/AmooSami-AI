@@ -65,8 +65,10 @@ class AI:
                     self.vision[i][j].append((ENEMY_BASE, self.turn_number))
                 if cell.resource_type == ResourceType.BREAD.value:
                     self.vision[i][j].append((BREAD, self.turn_number))
-                if cell.resource_type == ResourceType.GRASS.value:
+                elif cell.resource_type == ResourceType.GRASS.value:
                     self.vision[i][j].append((GRASS, self.turn_number))
+                else:
+                    self.vision[i][j].append((EMPTY, self.turn_number))
                 if cell.ants:
                     maximum = TEAM_KARGAR
                     for a in cell.ants:
@@ -82,7 +84,7 @@ class AI:
                             maximum = this
                     self.vision[i][j].append((maximum, self.turn_number))
                 else:
-                    self.vision[i][j].append((EMPTY, self.turn_number))
+                    self.vision[i][j].append((NO_ANTS, self.turn_number))
 
                 prune(self.vision[i][j])
 
