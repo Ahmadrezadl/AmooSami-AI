@@ -60,7 +60,7 @@ class AI:
                     continue
                 elif cell.type == CellType.WALL.value:
                     self.vision[i][j].append((WALL, self.turn_number))
-                elif cell.type == CellType.BASE.value:
+                elif cell.type == CellType.BASE.value and (base_x != j or base_y != i):
                     self.vision[i][j].append((ENEMY_BASE, self.turn_number))
                 elif cell.resource_type == ResourceType.BREAD.value:
                     self.vision[i][j].append((BREAD, self.turn_number))
