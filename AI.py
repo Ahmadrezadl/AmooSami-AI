@@ -26,6 +26,7 @@ class AI:
         except:
             cls.instance = AI()
             return cls.instance
+
     """
     Return a tuple with this form:
         (message: str, message_value: int, message_dirction: int)
@@ -58,15 +59,15 @@ class AI:
                 cell = self.game.ant.getMapCell(j, i)
                 if not cell:
                     continue
-                elif cell.type == CellType.WALL.value:
+                if cell.type == CellType.WALL.value:
                     self.vision[i][j].append((WALL, self.turn_number))
-                elif cell.type == CellType.BASE.value and (base_x != j or base_y != i):
+                if cell.type == CellType.BASE.value and (base_x != j or base_y != i):
                     self.vision[i][j].append((ENEMY_BASE, self.turn_number))
-                elif cell.resource_type == ResourceType.BREAD.value:
+                if cell.resource_type == ResourceType.BREAD.value:
                     self.vision[i][j].append((BREAD, self.turn_number))
-                elif cell.resource_type == ResourceType.GRASS.value:
+                if cell.resource_type == ResourceType.GRASS.value:
                     self.vision[i][j].append((GRASS, self.turn_number))
-                elif cell.ants:
+                if cell.ants:
                     maximum = TEAM_KARGAR
                     for a in cell.ants:
                         if a.antType == AntType.KARGAR.value and a.antTeam == AntTeam.ALLIED.value:
@@ -85,18 +86,10 @@ class AI:
 
                 prune(self.vision[i][j])
 
-
         print("turn: ", self.turn_number)
-        for row in self.vision:
-            for cell in row:
-                print(cell[0][0], end=' ')
-            print()
         if ant.antType == AntType.SARBAAZ.value:
             direction = random.randint(0, 4)
         elif ant.antType == AntType.KARGAR.value:
             direction = random.randint(0, 4)
 
-        # for i in self.vision:
-            # print(i)
-        # print(message, message_value, direction)
         return message, message_value, direction

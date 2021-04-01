@@ -1,8 +1,8 @@
-from consts import BULDINGS, ENTITIES, EMPTY, RESOURCES
+from consts import BUILDINGS, ENTITIES, EMPTY, RESOURCES
 
 
 def beat(ob_f, ob_s):
-    if ob_s in BULDINGS:
+    if ob_s in BUILDINGS:
         return False
     if ob_f in ENTITIES and ob_s in ENTITIES:
         return True
@@ -10,9 +10,9 @@ def beat(ob_f, ob_s):
         return True
     return False
 
+
 def prune(ls):
     ls.sort(key=lambda x: -x[1])
-    
     ret = []
     for ind in range(len(ls)):
         f = True
@@ -22,5 +22,4 @@ def prune(ls):
                 break
         if f:
             ret.append(ls[ind])
-    
     return ret
