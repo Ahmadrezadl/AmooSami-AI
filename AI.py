@@ -3,6 +3,7 @@ import random
 from consts import *
 import json
 from typing import *
+from tools import prune
 
 CENTER = Direction.CENTER.value
 LEFT = Direction.LEFT.value
@@ -18,6 +19,13 @@ class AI:
         self.turn_number: int = -1
         self.vision = []
 
+    @classmethod
+    def get_instance(cls):
+        try:
+            return cls.instance
+        except:
+            cls.instance = AI()
+            return cls.instance
     """
     Return a tuple with this form:
         (message: str, message_value: int, message_dirction: int)
@@ -42,7 +50,7 @@ class AI:
             for i in range(self.game.mapHeight):
                 new_line = []
                 for j in range(self.game.mapWidth):
-                    new_line.append((UNKNOWN, -1))
+                    new_line.append([(UNKNOWN, -1)])
                 self.vision.append(new_line)
 
         for i in range(self.game.mapHeight):
@@ -51,16 +59,16 @@ class AI:
                 if not cell:
                     continue
                 elif cell.type == CellType.WALL.value:
-                    self.vision[i][j] = (WALL, self.turn_number)
+                    self.vision[i][j].append((WALL, self.turn_number))
                 elif cell.type == CellType.BASE.value:
-                    self.vision[i][j] = (ENEMY_BASE, self.turn_number)
+                    self.vision[i][j].append((ENEMY_BASE, self.turn_number))
                 elif cell.resource_type is not None:
                     if cell.resource_type == ResourceType.BREAD.value:
-                        self.vision[i][j] = (BREAD, self.turn_number)
+                        self.vision[i][j].append((BREAD, self.turn_number))
                     else:
-                        self.vision[i][j] = (GRASS, self.turn_number)
+                        self.vision[i][j].append((GRASS, self.turn_number))
                 elif not cell.ants:
-                    self.vision[i][j] = (EMPTY, self.turn_number)
+                    self.vision[i][j].append((EMPTY, self.turn_number))
                 else:
                     maximum = TEAM_KARGAR
                     for a in cell.ants:
@@ -75,10 +83,13 @@ class AI:
                         if this > maximum:
                             maximum = this
 
-                    self.vision[i][j] = (maximum, self.turn_number)
+                    self.vision[i][j].append((maximum, self.turn_number))
+                
+                prune(self.vision[i][j])
 
 
         if ant.antType == AntType.SARBAAZ.value:
+            
             direction = random.randint(0, 4)
         elif ant.antType == AntType.KARGAR.value:
             pass

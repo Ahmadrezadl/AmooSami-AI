@@ -1,4 +1,4 @@
 {
-    "python.pythonPath": "/bin/python3",
+    "python.pythonPath": "/Users/amsen/.pyenv/versions/3.6.12/envs/.venv/bin/python",
     "python.linting.enabled": true
 }
