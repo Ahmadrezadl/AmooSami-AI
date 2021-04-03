@@ -38,7 +38,6 @@ class AI:
         message: str = None
         message_value: int = 0
         direction: int = Direction.CENTER.value
-
         ant = self.game.ant
         x = ant.currentX
         y = ant.currentY
@@ -56,12 +55,12 @@ class AI:
 
         for i in range(self.game.mapHeight):
             for j in range(self.game.mapWidth):
-                cell = self.game.ant.getMapCell(j, i)
+                cell = self.game.ant.visibleMap.cells[i][j]
                 if not cell:
                     continue
                 if cell.type == CellType.WALL.value:
                     self.vision[i][j].append((WALL, self.turn_number))
-                if cell.type == CellType.BASE.value and (base_x != j or base_y != i):
+                elif cell.type != CellType.EMPTY.value and (base_x != j or base_y != i):
                     self.vision[i][j].append((ENEMY_BASE, self.turn_number))
                 if cell.resource_type == ResourceType.BREAD.value:
                     self.vision[i][j].append((BREAD, self.turn_number))
