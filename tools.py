@@ -2,9 +2,9 @@ from consts import BUILDINGS, ENTITIES, EMPTY, RESOURCES, EMPTIES
 
 
 def beat(new_object, old_object):
-    if old_object in BUILDINGS:
-        return False
-    if old_object in EMPTIES:
+    if old_object in EMPTIES and new_object in EMPTIES:
+        return True
+    if old_object in BUILDINGS and new_object in BUILDINGS:
         return True
     if new_object in ENTITIES and old_object in ENTITIES:
         return True

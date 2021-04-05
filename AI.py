@@ -85,7 +85,7 @@ class AI:
                 else:
                     self.vision[i][j].append((NO_ANTS, self.turn_number))
 
-                prune(self.vision[i][j])
+                self.vision = prune(self.vision[i][j])
 
         print("turn: ", self.turn_number)
         if ant.antType == AntType.SARBAAZ.value:
