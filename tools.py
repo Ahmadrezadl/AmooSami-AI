@@ -48,7 +48,7 @@ def cost(obj, tm, role):
     return calc(w, alpha, turn_number - tm)
 
 def get_goal_cost(ls, role):
-    return sum([goal_cost(*it) for it in ls])
+    return sum([goal_cost(*it, role) for it in ls])
 
 def goal_cost(obj, tm, role):
     return GOAL_COST[role][obj](turn_number - tm)

@@ -118,12 +118,10 @@ class AI:
     def dij(self, vision, dis, par, role):
         ant = self.game.ant
         x, y = ant.currentX, ant.currentY
-        par = {}
-        dis = {}
         seen = {}
         ls = []
         root = (x, y)
-        dis[root] = get_cost(vision[x][y])
+        dis[root] = get_cost(vision[x][y], role)
         par[root] = (-1, -1)
         heapq.heappush(ls, (dis[root], root))
         while ls:
@@ -204,7 +202,7 @@ class AI:
         gx, gy = self.get_goal(my_vision, role)
         print("goal is: ", gx, gy)
         print("goal vision: ", my_vision[gx][gy])
-        print("goal cost:", get_goal_cost(my_vision[gx][gy]))
+        print("goal cost:", get_goal_cost(my_vision[gx][gy], role))
         if (x, y) == (gx, gy):
             return None
         
