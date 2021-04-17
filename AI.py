@@ -4,6 +4,7 @@ from consts import *
 from typing import *
 import random
 import heapq
+import copy
 
 CENTER = Direction.CENTER.value
 LEFT = Direction.LEFT.value
@@ -18,6 +19,23 @@ class AI:
         self.game: Game = None
         self.turn_number: int = -1
         self.vision = []
+
+    def init_dirs(self):
+        self.dirs = {
+            (1, 0): RIGHT,
+            (-1, 0): LEFT,
+            (0, 1): DOWN,
+            (0, -1): UP
+        }
+        N = self.game.mapWidth
+        M = self.game.mapHeight
+        self.dir_funcs = []
+        for (dx, dy) in self.dirs:
+            def g(dx, dy):
+                def f(p):
+                    return ((p[0] + dx + N)%N, (p[1] + dy + M)%M)
+                return f
+            self.dir_funcs.append(g(dx, dy))
 
     @classmethod
     def get_instance(cls):
@@ -44,6 +62,7 @@ class AI:
         base_x = self.game.baseX
         base_y = self.game.baseX
         self.turn_number = self.turn_number + 1
+        self.init_dirs()
 
         if not self.vision:
             print("Creating vision")
@@ -92,78 +111,100 @@ class AI:
         if ant.antType == AntType.SARBAAZ.value:
             direction = random.randint(0, 4)
         elif ant.antType == AntType.KARGAR.value:
-            direction = self.do_ant()
+            direction = self.get_move('ant')
 
         return message, message_value, direction
     
-    def do_ant(self):
-        # TODO apply sarbaz and enemy's base range
+    def dij(self, vision, dis, par, role):
         ant = self.game.ant
         x, y = ant.currentX, ant.currentY
         par = {}
         dis = {}
-        dirs = {
-            (1, 0): RIGHT,
-            (-1, 0): LEFT,
-            (0, 1): DOWN,
-            (0, -1): UP
-        }
+        seen = {}
+        ls = []
+        root = (x, y)
+        dis[root] = get_cost(vision[x][y])
+        par[root] = (-1, -1)
+        heapq.heappush(ls, (dis[root], root))
+        while ls:
+            cdis, cur = heapq.heappop(ls)
+            if cur in seen:
+                continue
+            seen[cur] = True
+
+            for df in self.dir_funcs:
+                npos = df(cur)
+                nx, ny = npos
+                ccst = get_cost(vision[nx][ny], role)
+                if npos not in dis or dis[npos] > cdis + ccst:
+                    dis[npos] = min(INF, cdis + ccst)
+                    par[npos] = cur
+                    heapq.heappush(ls, (dis[npos], npos))
+    
+    def get_goal(self, vision, role):
+        ant = self.game.ant
         N = self.game.mapWidth
         M = self.game.mapHeight
-        dir_funcs = []
-        for (dx, dy) in dirs:
-            def g(dx, dy):
-                def f(p):
-                    return ((p[0] + dx + N)%N, (p[1] + dy + M)%M)
-                return f
-            dir_funcs.append(g(dx, dy))
+
+        if ant.currentResource and ant.currentResource.value > 0:
+            return self.game.baseX, self.game.baseY
+        ret = (-1, -1)
+        mx = -INF
+        for i in range(N):
+            for j in range(M):
+                ccst = get_goal_cost(vision[i][j], role)
+                if mx < ccst:
+                    mx = ccst
+                    ret = (i, j)
+        return ret
+
+    def aviod(self, vision, avoidable, dist):
+        ret = copy.deepcopy(vision)
+        N = self.game.mapWidth
+        M = self.game.mapHeight
+        for x in range(N):
+            for y in range(M):
+                mn_tm = -INF
+                f = False
+                for dx in range(-dist, dist+1):
+                    rem = dist - abs(dx)
+                    for dy in range(-rem, rem+1):
+                        nx = (x + dx + N) % N
+                        ny = (y + dy + M) % M
+                        for ob, tm in vision[nx][ny]:
+                            if ob == avoidable:
+                                f = True
+                                mn_tm = max(mn_tm, tm)
+                if f:
+                    ret[x][y].append((avoidable, tm))
+        for x in range(N):
+            for y in range(M):
+                ret[x][y] = prune(ret[x][y])
+        return ret
+
+    def get_move(self, role):
+        my_vision = copy.deepcopy(self.vision)
+        for avoidable in AVOIDABLE[role]:
+            my_vision = self.aviod(my_vision, avoidable, AVOIDABLE[role][avoidable])
+
+        ant = self.game.ant
+        x, y = ant.currentX, ant.currentY
+        N = self.game.mapWidth
+        M = self.game.mapHeight
         for i in range(N):
             for j in range(M):
                 if i == x and j == y:
                     print("#", end=' ')
-                print(self.vision[i][j][0][0], end=' ')
+                print(my_vision[i][j][0][0], end=' ')
             print()
-
-        def dij():
-            seen = {}
-            ls = []
-            root = (x, y)
-            dis[root] = get_cost(self.vision[x][y])
-            par[root] = (-1, -1)
-            heapq.heappush(ls, (dis[root], root))
-            while ls:
-                cdis, cur = heapq.heappop(ls)
-                if cur in seen:
-                    continue
-                seen[cur] = True
-
-                for df in dir_funcs:
-                    npos = df(cur)
-                    nx, ny = npos
-                    ccst = get_cost(self.vision[nx][ny])
-                    if npos not in dis or dis[npos] > cdis + ccst:
-                        dis[npos] = min(INF, cdis + ccst)
-                        par[npos] = cur
-                        heapq.heappush(ls, (dis[npos], npos))
-        dij()
-
-        def get_goal():
-            if ant.currentResource and ant.currentResource.value > 0:
-                return self.game.baseX, self.game.baseY
-            ret = (-1, -1)
-            mx = -INF
-            for i in range(N):
-                for j in range(M):
-                    ccst = get_goal_cost(self.vision[i][j])
-                    if mx < ccst:
-                        mx = ccst
-                        ret = (i, j)
-            return ret
         
-        gx, gy = get_goal()
+        dis = {}
+        par = {}
+        self.dij(my_vision, dis, par, role)        
+        gx, gy = self.get_goal(my_vision, role)
         print("goal is: ", gx, gy)
-        print("goal vision: ", self.vision[gx][gy])
-        print("goal cost:", get_goal_cost(self.vision[gx][gy]))
+        print("goal vision: ", my_vision[gx][gy])
+        print("goal cost:", get_goal_cost(my_vision[gx][gy]))
         if (x, y) == (gx, gy):
             return None
         
@@ -173,4 +214,4 @@ class AI:
             print(it)
             it = par[it]
         
-        return dirs[(it[0] - x, it[1] - y)]
+        return self.dirs[(it[0] - x, it[1] - y)]

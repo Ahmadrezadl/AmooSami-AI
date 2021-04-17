@@ -40,15 +40,15 @@ def prune(ls):
 def calc(w, alpha, t):
     return w * math.exp(alpha * t)
 
-def get_cost(ls):
-    return 1 + sum([cost(*it) for it in ls])
+def get_cost(ls, role):
+    return 1 + sum([cost(*it, role) for it in ls])
 
-def cost(obj, tm):
-    w, alpha = COST[obj]
+def cost(obj, tm, role):
+    w, alpha = COST[role][obj]
     return calc(w, alpha, turn_number - tm)
 
-def get_goal_cost(ls):
+def get_goal_cost(ls, role):
     return sum([goal_cost(*it) for it in ls])
 
-def goal_cost(obj, tm):
-    return GOAL_COST[obj](turn_number - tm)
+def goal_cost(obj, tm, role):
+    return GOAL_COST[role][obj](turn_number - tm)
