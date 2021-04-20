@@ -84,5 +84,9 @@ AVOIDABLE = {
     'ant': {
         ENEMY_SARBAZ: 4,
         ENEMY_BASE: 6
+    },
+    'scorpion': {
+        ENEMY_SARBAZ: 4,
+        ENEMY_BASE: 6
     }
 }
