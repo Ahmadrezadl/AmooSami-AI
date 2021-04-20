@@ -71,6 +71,7 @@ class AI:
                 for j in range(self.game.mapHeight):
                     new_line.append([(UNKNOWN, -1)])
                 self.vision.append(new_line)
+            self.vision[self.game.mapWidth-base_x][self.game.mapHeight-base_y].append((ENEMY_BASE, self.turn_number))
 
         for i in range(self.game.mapWidth):
             for j in range(self.game.mapHeight):
