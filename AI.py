@@ -109,7 +109,7 @@ class AI:
         print("turn: ", self.turn_number)
         set_turn_number(self.turn_number)
         if ant.antType == AntType.SARBAAZ.value:
-            direction = random.randint(0, 4)
+            direction = self.get_move('scorpion')
         elif ant.antType == AntType.KARGAR.value:
             direction = self.get_move('ant')
 

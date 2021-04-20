@@ -35,6 +35,19 @@ COST = {
         TEAM_SARBAZ: (0, 0),
         ENEMY_KARGAR: (0, 0),
         ENEMY_SARBAZ: (1000, -1.5)
+    },
+    'scorpion': {
+        UNKNOWN: (10, 0),
+        WALL: (INF, 0),
+        EMPTY: (10, 0),
+        NO_ANTS: (10, 0),
+        ENEMY_BASE: (0, 0),
+        BREAD: (0, 0),
+        GRASS: (0, 0),
+        TEAM_KARGAR: (0, 0),
+        TEAM_SARBAZ: (0, 0),
+        ENEMY_KARGAR: (0, 0),
+        ENEMY_SARBAZ: (1000, -1.5)
     }
 }
 
@@ -51,6 +64,19 @@ GOAL_COST = {
         TEAM_SARBAZ: lambda t: 0,
         ENEMY_KARGAR: lambda t: 0,
         ENEMY_SARBAZ: lambda t: -1000 * math.exp(-t),
+    },
+    'scorpion': {
+        UNKNOWN: lambda t: 10,
+        WALL: lambda t: -INF,
+        EMPTY: lambda t: 0,
+        NO_ANTS: lambda t: 0,
+        ENEMY_BASE: lambda t: -INF,
+        BREAD: lambda t: 0,
+        GRASS: lambda t: 0,
+        TEAM_KARGAR: lambda t: 50,
+        TEAM_SARBAZ: lambda t: 200,
+        ENEMY_KARGAR: lambda t: 100,
+        ENEMY_SARBAZ: lambda t: -200
     }
 }
 
