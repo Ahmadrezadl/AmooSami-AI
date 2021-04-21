@@ -170,7 +170,7 @@ class AI:
         M = self.game.mapHeight
         for x in range(N):
             for y in range(M):
-                mn_tm = -INF
+                mx_tm = -INF
                 f = False
                 for dx in range(-dist, dist+1):
                     rem = dist - abs(dx)
@@ -180,12 +180,12 @@ class AI:
                         for ob, tm in vision[nx][ny]:
                             if ob == avoidable:
                                 f = True
-                                mn_tm = max(mn_tm, tm)
+                                mx_tm = max(mx_tm, tm)
                 if f:
-                    ret[x][y].append((avoidable, tm))
-        for x in range(N):
-            for y in range(M):
-                ret[x][y] = prune(ret[x][y])
+                    ret[x][y].append((avoidable, mx_tm))
+        # for x in range(N):
+        #     for y in range(M):
+        #         ret[x][y] = prune(ret[x][y])
         return ret
 
     def get_move(self, role):
