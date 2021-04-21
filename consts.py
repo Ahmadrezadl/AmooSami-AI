@@ -53,6 +53,9 @@ COST = {
     }
 }
 
+def f(t):
+    return (tools.allied_in_range - tools.enemy_in_range) * 100 * math.exp(-2*t)
+
 GOAL_COST = {
     'ant': {
         UNKNOWN: lambda t: 10,
@@ -78,7 +81,7 @@ GOAL_COST = {
         TEAM_KARGAR: lambda t: 50 * math.exp(-t),
         TEAM_SARBAZ: lambda t: 0,
         ENEMY_KARGAR: lambda t: 100 * math.exp(-0.5*t),
-        ENEMY_SARBAZ: lambda t: -200 * math.exp(-0.5*t)
+        ENEMY_SARBAZ: lambda t: f(t) #-200 * math.exp(-0.5*t)
     }
 }
 

@@ -73,6 +73,9 @@ class AI:
                 self.vision.append(new_line)
             self.vision[self.game.mapWidth-base_x][self.game.mapHeight-base_y].append((ENEMY_BASE, self.turn_number))
 
+        tools.allied_in_range = 0
+        tools.enemy_in_range = 0
+
         for i in range(self.game.mapWidth):
             for j in range(self.game.mapHeight):
                 cell = self.game.ant.visibleMap.cells[i][j]
@@ -93,12 +96,16 @@ class AI:
                     for a in cell.ants:
                         if a.antType == AntType.KARGAR.value and a.antTeam == AntTeam.ALLIED.value:
                             this = TEAM_KARGAR
+                            tools.allied_in_range += 0.5
                         elif a.antType == AntType.SARBAAZ.value and a.antTeam == AntTeam.ALLIED.value:
                             this = TEAM_SARBAZ
+                            tools.allied_in_range += 1
                         elif a.antType == AntType.KARGAR.value and a.antTeam == AntTeam.ENEMY.value:
                             this = ENEMY_KARGAR
+                            tools.enemy_in_range += 0.5
                         else:
                             this = ENEMY_SARBAZ
+                            tools.enemy_in_range += 1
                         if this > maximum:
                             maximum = this
                     self.vision[i][j].append((maximum, self.turn_number))

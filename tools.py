@@ -2,6 +2,8 @@ import math
 from consts import BUILDINGS, ENEMY_BASE, ENTITIES, EMPTY, COST, GOAL_COST, INF, EMPTIES, NO_ANTS, RESOURCES, UNKNOWN
 
 turn_number = 0
+allied_in_range=0
+enemy_in_range=0
 
 def set_turn_number(tn):
     global turn_number
