@@ -1,6 +1,8 @@
 import math
 
 #cell types
+import tools
+
 UNKNOWN = -1
 WALL = 0
 EMPTY = 1
@@ -41,9 +43,9 @@ COST = {
         WALL: (INF, 0),
         EMPTY: (10, 0),
         NO_ANTS: (10, 0),
-        ENEMY_BASE: (0, 0),
-        BREAD: (0, 0),
-        GRASS: (0, 0),
+        ENEMY_BASE: (50, 0),
+        BREAD: (5, 0),
+        GRASS: (5, 0),
         TEAM_KARGAR: (0, -1.5),
         TEAM_SARBAZ: (0, 0),
         ENEMY_KARGAR: (0, 0),
@@ -70,7 +72,7 @@ GOAL_COST = {
         WALL: lambda t: -INF,
         EMPTY: lambda t: 0,
         NO_ANTS: lambda t: 0,
-        ENEMY_BASE: lambda t: -500 + int(t / 60) * 1000,
+        ENEMY_BASE: lambda t: -500 + int(tools.turn_number / 70) * 1000,
         BREAD: lambda t: 0,
         GRASS: lambda t: 0,
         TEAM_KARGAR: lambda t: 50,
