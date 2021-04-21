@@ -33,9 +33,9 @@ COST = {
         ENEMY_BASE: (INF, 0),
         BREAD: (0, 0),
         GRASS: (0, 0),
-        TEAM_KARGAR: (10, -1.5),
-        TEAM_SARBAZ: (0, 0),
-        ENEMY_KARGAR: (0, 0),
+        TEAM_KARGAR: (20, -1),
+        TEAM_SARBAZ: (10, 0),
+        ENEMY_KARGAR: (10, 0),
         ENEMY_SARBAZ: (1000, -1.5)
     },
     'scorpion': {
@@ -75,20 +75,19 @@ GOAL_COST = {
         ENEMY_BASE: lambda t: -500 + int(tools.turn_number / 70) * 1000,
         BREAD: lambda t: 0,
         GRASS: lambda t: 0,
-        TEAM_KARGAR: lambda t: 50,
+        TEAM_KARGAR: lambda t: 50 * math.exp(-t),
         TEAM_SARBAZ: lambda t: 0,
-        ENEMY_KARGAR: lambda t: 100,
-        ENEMY_SARBAZ: lambda t: -200
+        ENEMY_KARGAR: lambda t: 100 * math.exp(-0.5*t),
+        ENEMY_SARBAZ: lambda t: -200 * math.exp(-0.5*t)
     }
 }
 
 AVOIDABLE = {
     'ant': {
-        ENEMY_SARBAZ: 4,
+        ENEMY_SARBAZ: 5,
         ENEMY_BASE: 6
     },
     'scorpion': {
-        ENEMY_SARBAZ: 4,
         ENEMY_BASE: 6
     }
 }
