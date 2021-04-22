@@ -75,7 +75,7 @@ GOAL_COST = {
         WALL: lambda t: -INF,
         EMPTY: lambda t: 0,
         NO_ANTS: lambda t: 0,
-        ENEMY_BASE: lambda t: -500 + int(tools.turn_number / 70) * 1000,
+        ENEMY_BASE: lambda t: -500 + int(tools.turn_number / 70) * 550,
         BREAD: lambda t: 0,
         GRASS: lambda t: 0,
         TEAM_KARGAR: lambda t: 50 * math.exp(-t),
@@ -91,6 +91,8 @@ AVOIDABLE = {
         ENEMY_BASE: 6
     },
     'scorpion': {
-        ENEMY_BASE: 6
+        ENEMY_BASE: 6,
+        ENEMY_KARGAR: 6,
+        TEAM_KARGAR: 6
     }
 }
