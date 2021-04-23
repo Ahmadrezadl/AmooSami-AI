@@ -118,6 +118,8 @@ class AI:
         elif ant.antType == AntType.KARGAR.value:
             direction = self.get_move('ant')
 
+        AI.vision = self.vision
+        AI.turn_number = self.turn_number
         return message, message_value, direction
     
     def dij(self, start, vision, dis, cnt, par, role):
