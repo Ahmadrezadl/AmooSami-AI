@@ -43,6 +43,7 @@ def calc(w, alpha, t):
     return w * math.exp(alpha * t)
 
 def get_cost(ls, role, offset):
+    offset = 0
     return 1 + sum([cost(*it, role, offset) for it in ls])
 
 def cost(obj, tm, role, offset):
