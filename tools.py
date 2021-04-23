@@ -10,6 +10,8 @@ def set_turn_number(tn):
     turn_number = tn
 
 def beat(new_object, old_object):
+    if old_object == ENEMY_BASE:
+        return True
     if old_object == UNKNOWN:
         return True
     if new_object == old_object:
@@ -43,7 +45,7 @@ def calc(w, alpha, t):
     return w * math.exp(alpha * t)
 
 def get_cost(ls, role, offset):
-    offset = 0
+    # offset = 0
     return 1 + sum([cost(*it, role, offset) for it in ls])
 
 def cost(obj, tm, role, offset):

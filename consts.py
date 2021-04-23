@@ -26,7 +26,7 @@ EMPTIES = {EMPTY, NO_ANTS}
 INF = 1e10
 COST = {
     'ant': {
-        UNKNOWN: (12, 0),
+        UNKNOWN: (20, 0),
         WALL: (INF, 0),
         EMPTY: (10, 0),
         NO_ANTS: (10, 0),
@@ -36,7 +36,7 @@ COST = {
         TEAM_KARGAR: (20, -1),
         TEAM_SARBAZ: (10, 0),
         ENEMY_KARGAR: (10, 0),
-        ENEMY_SARBAZ: (1000, -1.5)
+        ENEMY_SARBAZ: (2000, -1.5)
     },
     'scorpion': {
         UNKNOWN: (10, 0),

@@ -63,9 +63,8 @@ class AI:
         base_y = self.game.baseX
         self.turn_number = self.turn_number + 1
         self.init_dirs()
-
         if not self.vision:
-            print("Creating vision")
+            # print("Creating vision")
             for i in range(self.game.mapWidth):
                 new_line = []
                 for j in range(self.game.mapHeight):
@@ -114,7 +113,7 @@ class AI:
 
                 self.vision[i][j] = prune(self.vision[i][j])
 
-        print("turn: ", self.turn_number)
+        # print("turn: ", self.turn_number)
         set_turn_number(self.turn_number)
         if ant.antType == AntType.SARBAAZ.value:
             direction = self.get_move('scorpion')
@@ -123,13 +122,11 @@ class AI:
 
         return message, message_value, direction
     
-    def dij(self, vision, dis, cnt, par, role):
-        ant = self.game.ant
-        x, y = ant.currentX, ant.currentY
+    def dij(self, start, vision, dis, cnt, par, role):
         seen = {}
         ls = []
-        root = (x, y)
-        dis[root] = get_cost(vision[x][y], role, 0)
+        root = start
+        dis[root] = get_cost(vision[root[0]][root[1]], role, 0)
         par[root] = (-1, -1)
         cnt[root] = 0
         heapq.heappush(ls, (dis[root], root))
@@ -149,7 +146,7 @@ class AI:
                     par[npos] = cur
                     heapq.heappush(ls, (dis[npos], npos))
     
-    def get_goal(self, vision, cnt, role):
+    def get_goal(self, vision, cnt, cnt_from_base, role):
         ant = self.game.ant
         N = self.game.mapWidth
         M = self.game.mapHeight
@@ -160,7 +157,7 @@ class AI:
         mx = -INF
         for i in range(N):
             for j in range(M):
-                ccst = get_goal_cost(vision[i][j], role)# / (cnt[(i, j)] + 1)
+                ccst = get_goal_cost(vision[i][j], role) - (cnt[(i, j)] + 1) - 0.3*((cnt_from_base[(i, j)] + 1) if role == 'ant' else 0)
                 if mx < ccst:
                     mx = ccst
                     ret = (i, j)
@@ -199,29 +196,31 @@ class AI:
         x, y = ant.currentX, ant.currentY
         N = self.game.mapWidth
         M = self.game.mapHeight
-        for i in range(N):
-            for j in range(M):
-                if i == x and j == y:
-                    print("#", end=' ')
-                print(my_vision[i][j][0][0], end=' ')
-            print()
+        # for i in range(N):
+        #     for j in range(M):
+        #         if i == x and j == y:
+        #             print("#", end=' ')
+        #         print(my_vision[i][j][0][0], end=' ')
+        #     print()
         
         dis = {}
         cnt = {}
         par = {}
-        self.dij(my_vision, dis, cnt, par, role)        
-        gx, gy = self.get_goal(my_vision, cnt, role)
-        print("goal is: ", gx, gy)
-        print("goal vision: ", my_vision[gx][gy])
-        print("goal cost:", get_goal_cost(my_vision[gx][gy], role))
+        self.dij((x, y), my_vision, dis, cnt, par, role)
+        cnt_from_base = {}
+        self.dij((self.game.baseX, self.game.baseY), my_vision, {}, cnt_from_base, {}, role)
+        gx, gy = self.get_goal(my_vision, cnt, cnt_from_base, role)
+        # print("goal is: ", gx, gy)
+        # print("goal vision: ", my_vision[gx][gy])
+        # print("goal cost:", get_goal_cost(my_vision[gx][gy], role))
         if (x, y) == (gx, gy):
             return None
         
-        print(gx, gy)
+        # print(gx, gy)
         it = (gx, gy)
         while par[it] != (x, y):
-            print(it)
+            # print(it)
             it = par[it]
         
-        print("RETURNED: ", self.dirs[(it[0] - x, it[1] - y)])
+        # print("RETURNED: ", self.dirs[(it[0] - x, it[1] - y)])
         return self.dirs[(it[0] - x, it[1] - y)]
