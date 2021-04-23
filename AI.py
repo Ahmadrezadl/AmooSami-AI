@@ -160,7 +160,7 @@ class AI:
         mx = -INF
         for i in range(N):
             for j in range(M):
-                ccst = get_goal_cost(vision[i][j], role) / (cnt + 1)
+                ccst = get_goal_cost(vision[i][j], role)# / (cnt[(i, j)] + 1)
                 if mx < ccst:
                     mx = ccst
                     ret = (i, j)
@@ -223,4 +223,5 @@ class AI:
             print(it)
             it = par[it]
         
+        print("RETURNED: ", self.dirs[(it[0] - x, it[1] - y)])
         return self.dirs[(it[0] - x, it[1] - y)]
