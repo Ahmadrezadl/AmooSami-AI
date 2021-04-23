@@ -70,7 +70,7 @@ class AI:
                 for j in range(self.game.mapHeight):
                     new_line.append([(UNKNOWN, -1)])
                 self.vision.append(new_line)
-            self.vision[self.game.mapWidth-base_x][self.game.mapHeight-base_y].append((ENEMY_BASE, self.turn_number))
+            self.vision[self.game.mapWidth-base_x-1][self.game.mapHeight-base_y-1].append((ENEMY_BASE, self.turn_number))
 
         tools.allied_in_range = 0
         tools.enemy_in_range = 0
@@ -137,6 +137,7 @@ class AI:
             seen[cur] = True
 
             for df in self.dir_funcs:
+                print(cur)
                 npos = df(cur)
                 nx, ny = npos
                 ccst = get_cost(vision[nx][ny], role, cnt[cur] + 1)
