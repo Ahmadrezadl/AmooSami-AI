@@ -16,9 +16,15 @@ DOWN = Direction.DOWN.value
 class AI:
     def __init__(self):
         # Current Game State
-        self.game: Game = None
-        self.turn_number: int = -1
-        self.vision = []
+        try:
+            self.game = AI.instance.game
+            self.turn_number = AI.instance.turn_number
+            self.vision = AI.instance.vision
+        except:
+            self.game: Game = None
+            self.turn_number: int = -1
+            self.vision = []
+            AI.instance = self
 
     def init_dirs(self):
         self.dirs = {
@@ -36,14 +42,6 @@ class AI:
                     return ((p[0] + dx + N)%N, (p[1] + dy + M)%M)
                 return f
             self.dir_funcs.append(g(dx, dy))
-
-    @classmethod
-    def get_instance(cls):
-        try:
-            return cls.instance
-        except:
-            cls.instance = AI()
-            return cls.instance
 
     """
     Return a tuple with this form:
