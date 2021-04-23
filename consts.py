@@ -80,7 +80,7 @@ GOAL_COST = {
         GRASS: lambda t: 0,
         TEAM_KARGAR: lambda t: 50 * math.exp(-t),
         TEAM_SARBAZ: lambda t: 0,
-        ENEMY_KARGAR: lambda t: 100 * math.exp(-0.5*t),
+        ENEMY_KARGAR: lambda t: 200 * math.exp(-0.5*t),
         ENEMY_SARBAZ: lambda t: f(t) #-200 * math.exp(-0.5*t)
     }
 }
@@ -92,7 +92,6 @@ AVOIDABLE = {
     },
     'scorpion': {
         ENEMY_BASE: 6,
-        ENEMY_KARGAR: 6,
-        TEAM_KARGAR: 6
+        ENEMY_KARGAR: 4,
     }
 }
