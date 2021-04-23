@@ -137,7 +137,6 @@ class AI:
             seen[cur] = True
 
             for df in self.dir_funcs:
-                print(cur)
                 npos = df(cur)
                 nx, ny = npos
                 ccst = get_cost(vision[nx][ny], role, cnt[cur] + 1)
@@ -238,5 +237,4 @@ class AI:
             ddy -= M
         if ddy < -1:
             ddy += M
-
         return self.dirs[(ddx, ddy)]
