@@ -17,14 +17,14 @@ class AI:
     def __init__(self):
         # Current Game State
         try:
-            self.game = AI.instance.game
-            self.turn_number = AI.instance.turn_number
-            self.vision = AI.instance.vision
+            self.turn_number = AI.turn_number
+            self.vision = AI.vision
         except:
-            self.game: Game = None
             self.turn_number: int = -1
             self.vision = []
-            AI.instance = self
+            AI.turn_number = self.turn_number
+            AI.vision = self.vision
+            
 
     def init_dirs(self):
         self.dirs = {
