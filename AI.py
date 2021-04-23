@@ -228,4 +228,15 @@ class AI:
             it = par[it]
         
         # print("RETURNED: ", self.dirs[(it[0] - x, it[1] - y)])
-        return self.dirs[(it[0] - x, it[1] - y)]
+        ddx = it[0] - x
+        ddy = it[1] - y
+        if ddx > 1:
+            ddx -= N
+        if ddx < -1:
+            ddx += N
+        if ddy > 1:
+            ddy -= M
+        if ddy < -1:
+            ddy += M
+
+        return self.dirs[(ddx, ddy)]
