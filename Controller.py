@@ -60,7 +60,7 @@ class Controller:
         self.network.send({"type": 6, "info": {}})
 
     def handle_turn_message(self, currentState):
-        self.client = AI.get_instance()
+        self.client = AI()
         game = Game()
         game.initGameConfig(self.gameConfig)
         game.setCurrentState(currentState)
