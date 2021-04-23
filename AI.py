@@ -82,7 +82,7 @@ class AI:
                     continue
                 if cell.type == CellType.WALL.value:
                     self.vision[i][j].append((WALL, self.turn_number))
-                elif cell.type != CellType.EMPTY.value and (base_x != i or base_y != j): # what
+                elif cell.type != CellType.BASE.value and cell.type == CellType.BASE.value and (base_x != i or base_y != j): # what
                     self.vision[i][j].append((ENEMY_BASE, self.turn_number))
                 if cell.resource_type == ResourceType.BREAD.value:
                     self.vision[i][j].append((BREAD, self.turn_number))
@@ -157,7 +157,10 @@ class AI:
         mx = -INF
         for i in range(N):
             for j in range(M):
-                if dis[(i,j)] > 5000:continue
+                if dis[(i,j)] > 5000:
+                    # print(str(i) + " " + str(j) + " " + str(dis[(i,j)]))
+                    # print("vision", vision[i][j])
+                    continue
                 ccst = get_goal_cost(vision[i][j], role) - (cnt[(i, j)] + 1) - 0.3*((cnt_from_base[(i, j)] + 1) if role == 'ant' else 0)
                 if mx < ccst:
                     mx = ccst
