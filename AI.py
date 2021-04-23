@@ -146,7 +146,7 @@ class AI:
                     par[npos] = cur
                     heapq.heappush(ls, (dis[npos], npos))
     
-    def get_goal(self, vision, cnt, cnt_from_base, role):
+    def get_goal(self, vision,dis, cnt, cnt_from_base, role):
         ant = self.game.ant
         N = self.game.mapWidth
         M = self.game.mapHeight
@@ -157,6 +157,7 @@ class AI:
         mx = -INF
         for i in range(N):
             for j in range(M):
+                if dis[(i,j)] > 5000:continue
                 ccst = get_goal_cost(vision[i][j], role) - (cnt[(i, j)] + 1) - 0.3*((cnt_from_base[(i, j)] + 1) if role == 'ant' else 0)
                 if mx < ccst:
                     mx = ccst
@@ -209,7 +210,7 @@ class AI:
         self.dij((x, y), my_vision, dis, cnt, par, role)
         cnt_from_base = {}
         self.dij((self.game.baseX, self.game.baseY), my_vision, {}, cnt_from_base, {}, role)
-        gx, gy = self.get_goal(my_vision, cnt, cnt_from_base, role)
+        gx, gy = self.get_goal(my_vision,dis, cnt, cnt_from_base, role)
         # print("goal is: ", gx, gy)
         # print("goal vision: ", my_vision[gx][gy])
         # print("goal cost:", get_goal_cost(my_vision[gx][gy], role))
