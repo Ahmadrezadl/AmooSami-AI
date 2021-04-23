@@ -123,14 +123,15 @@ class AI:
 
         return message, message_value, direction
     
-    def dij(self, vision, dis, par, role):
+    def dij(self, vision, dis, cnt, par, role):
         ant = self.game.ant
         x, y = ant.currentX, ant.currentY
         seen = {}
         ls = []
         root = (x, y)
-        dis[root] = get_cost(vision[x][y], role)
+        dis[root] = get_cost(vision[x][y], role, 0)
         par[root] = (-1, -1)
+        cnt[root] = 0
         heapq.heappush(ls, (dis[root], root))
         while ls:
             cdis, cur = heapq.heappop(ls)
@@ -141,13 +142,14 @@ class AI:
             for df in self.dir_funcs:
                 npos = df(cur)
                 nx, ny = npos
-                ccst = get_cost(vision[nx][ny], role)
+                ccst = get_cost(vision[nx][ny], role, cnt[cur] + 1)
                 if npos not in dis or dis[npos] > cdis + ccst:
+                    cnt[npos] = cnt[cur] + 1
                     dis[npos] = min(INF, cdis + ccst)
                     par[npos] = cur
                     heapq.heappush(ls, (dis[npos], npos))
     
-    def get_goal(self, vision, role):
+    def get_goal(self, vision, cnt, role):
         ant = self.game.ant
         N = self.game.mapWidth
         M = self.game.mapHeight
@@ -158,13 +160,13 @@ class AI:
         mx = -INF
         for i in range(N):
             for j in range(M):
-                ccst = get_goal_cost(vision[i][j], role)
+                ccst = get_goal_cost(vision[i][j], role) / (cnt + 1)
                 if mx < ccst:
                     mx = ccst
                     ret = (i, j)
         return ret
 
-    def aviod(self, vision, avoidable, dist):
+    def scale(self, vision, avoidable, dist):
         ret = copy.deepcopy(vision)
         N = self.game.mapWidth
         M = self.game.mapHeight
@@ -190,8 +192,8 @@ class AI:
 
     def get_move(self, role):
         my_vision = copy.deepcopy(self.vision)
-        for avoidable in AVOIDABLE[role]:
-            my_vision = self.aviod(my_vision, avoidable, AVOIDABLE[role][avoidable])
+        for scalable in SCALABLE[role]:
+            my_vision = self.scale(my_vision, scalable, SCALABLE[role][scalable])
 
         ant = self.game.ant
         x, y = ant.currentX, ant.currentY
@@ -205,9 +207,10 @@ class AI:
             print()
         
         dis = {}
+        cnt = {}
         par = {}
-        self.dij(my_vision, dis, par, role)        
-        gx, gy = self.get_goal(my_vision, role)
+        self.dij(my_vision, dis, cnt, par, role)        
+        gx, gy = self.get_goal(my_vision, cnt, role)
         print("goal is: ", gx, gy)
         print("goal vision: ", my_vision[gx][gy])
         print("goal cost:", get_goal_cost(my_vision[gx][gy], role))

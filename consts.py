@@ -26,7 +26,7 @@ EMPTIES = {EMPTY, NO_ANTS}
 INF = 1e10
 COST = {
     'ant': {
-        UNKNOWN: (10, 0),
+        UNKNOWN: (12, 0),
         WALL: (INF, 0),
         EMPTY: (10, 0),
         NO_ANTS: (10, 0),
@@ -68,7 +68,7 @@ GOAL_COST = {
         TEAM_KARGAR: lambda t: -10 * math.exp(-t),
         TEAM_SARBAZ: lambda t: 0,
         ENEMY_KARGAR: lambda t: 0,
-        ENEMY_SARBAZ: lambda t: -1000 * math.exp(-t),
+        ENEMY_SARBAZ: lambda t: -2000 * math.exp(-t),
     },
     'scorpion': {
         UNKNOWN: lambda t: 20,
@@ -81,17 +81,17 @@ GOAL_COST = {
         TEAM_KARGAR: lambda t: 50 * math.exp(-t),
         TEAM_SARBAZ: lambda t: 0,
         ENEMY_KARGAR: lambda t: 200 * math.exp(-0.5*t),
-        ENEMY_SARBAZ: lambda t: f(t) #-200 * math.exp(-0.5*t)
+        ENEMY_SARBAZ: f #-200 * math.exp(-0.5*t)
     }
 }
 
-AVOIDABLE = {
+SCALABLE = {
     'ant': {
-        ENEMY_SARBAZ: 5,
+        ENEMY_SARBAZ: 4,
         ENEMY_BASE: 6
     },
     'scorpion': {
-        ENEMY_BASE: 6,
         ENEMY_KARGAR: 4,
+        ENEMY_BASE: 6
     }
 }

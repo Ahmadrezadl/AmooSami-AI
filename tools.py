@@ -42,12 +42,12 @@ def prune(ls):
 def calc(w, alpha, t):
     return w * math.exp(alpha * t)
 
-def get_cost(ls, role):
-    return 1 + sum([cost(*it, role) for it in ls])
+def get_cost(ls, role, offset):
+    return 1 + sum([cost(*it, role, offset) for it in ls])
 
-def cost(obj, tm, role):
+def cost(obj, tm, role, offset):
     w, alpha = COST[role][obj]
-    return calc(w, alpha, turn_number - tm)
+    return calc(w, alpha, offset + turn_number - tm)
 
 def get_goal_cost(ls, role):
     return sum([goal_cost(*it, role) for it in ls])
