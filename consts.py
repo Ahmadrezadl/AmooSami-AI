@@ -31,6 +31,7 @@ INF = 1e10
 
 def trap_for_ant(t):
     from tools import has_resource
+    # print("salam" , has_resource)
     return 2000 if has_resource else 10
 
 COST = {

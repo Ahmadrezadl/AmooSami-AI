@@ -55,7 +55,7 @@ class AI:
         message_value: int = 0
         direction: int = Direction.CENTER.value
         ant = self.game.ant
-        print(ant.health)
+        # print(ant.health)
         x = ant.currentX
         y = ant.currentY
         base_x = self.game.baseX
@@ -92,9 +92,9 @@ class AI:
                     continue
                 if cell.type == CellType.WALL.value:
                     self.vision[i][j].append((WALL, self.turn_number))
-                elif cell.type == CellType.TRAP:
+                elif cell.type == CellType.TRAP.value:
                     self.vision[i][j].append((TRAP, self.turn_number))
-                elif cell.type == CellType.SWAMP:
+                elif cell.type == CellType.SWAMP.value:
                     self.vision[i][j].append((SWAMP, self.turn_number))
                 elif cell.type != CellType.BASE.value and cell.type == CellType.BASE.value and (base_x != i or base_y != j): # what
                     self.vision[i][j].append((ENEMY_BASE, self.turn_number))
