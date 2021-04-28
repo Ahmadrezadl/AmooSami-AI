@@ -28,37 +28,41 @@ EMPTIES = {EMPTY, NO_ANTS}
 
 #const values
 INF = 1e10
+
+def trap_for_ant(t):
+    from tools import has_resource
+    return 2000 if has_resource else 10
+
 COST = {
     'ant': {
-        UNKNOWN: (20, 0),
-        WALL: (INF, 0),
-        EMPTY: (10, 0),
-        NO_ANTS: (10, 0),
-        ENEMY_BASE: (INF, 0),
-        BREAD: (0, 0),
-        GRASS: (0, 0),
-        TEAM_KARGAR: (20, -1),
-        TEAM_SARBAZ: (10, 0),
-        ENEMY_KARGAR: (10, 0),
-        ENEMY_SARBAZ: (2000, -1.5),
-        SWAMP: (50, 0),
-        -100: (1000,0),
-        -101: (0,0)
+        UNKNOWN: lambda t: 20,
+        WALL: lambda t: INF,
+        EMPTY: lambda t: 10,
+        NO_ANTS: lambda t: 10,
+        ENEMY_BASE: lambda t: INF,
+        BREAD: lambda t: 0,
+        GRASS: lambda t: 0,
+        TEAM_KARGAR: lambda t: 20 * math.exp(-1*t),
+        TEAM_SARBAZ: lambda t: 10,
+        ENEMY_KARGAR: lambda t: 10,
+        ENEMY_SARBAZ: lambda t: 2000 * math.exp(-1.5*t),
+        SWAMP: lambda t: 50,
+        TRAP: trap_for_ant
     },
     'scorpion': {
-        UNKNOWN: (10, 0),
-        WALL: (INF, 0),
-        EMPTY: (10, 0),
-        NO_ANTS: (10, 0),
-        ENEMY_BASE: (50, 0),
-        BREAD: (5, 0),
-        GRASS: (5, 0),
-        TEAM_KARGAR: (0, -1.5),
-        TEAM_SARBAZ: (0, 0),
-        ENEMY_KARGAR: (0, 0),
-        ENEMY_SARBAZ: (1000, -1.5),
-        SWAMP: (50, 0),
-        TRAP: (10, 0)
+        UNKNOWN: lambda t: 10,
+        WALL: lambda t: INF,
+        EMPTY: lambda t: 10,
+        NO_ANTS: lambda t: 10,
+        ENEMY_BASE: lambda t: 50,
+        BREAD: lambda t: 5,
+        GRASS: lambda t: 5,
+        TEAM_KARGAR: lambda t: 0,
+        TEAM_SARBAZ: lambda t: 0,
+        ENEMY_KARGAR: lambda t: 0,
+        ENEMY_SARBAZ: lambda t: 1000 * math.exp(-1.5 * t),
+        SWAMP: lambda t: 50,
+        TRAP: lambda t: 10,
     }
 }
 
@@ -78,8 +82,8 @@ GOAL_COST = {
         TEAM_SARBAZ: lambda t: 0,
         ENEMY_KARGAR: lambda t: 0,
         ENEMY_SARBAZ: lambda t: -2000 * math.exp(-t),
-        SWAMP: -1000,
-        TRAP: -1000
+        SWAMP: lambda t: -1000,
+        TRAP: lambda t: -100000
     },
     'scorpion': {
         UNKNOWN: lambda t: 20,
@@ -93,8 +97,8 @@ GOAL_COST = {
         TEAM_SARBAZ: lambda t: 0,
         ENEMY_KARGAR: lambda t: 200 * math.exp(-0.5*t),
         ENEMY_SARBAZ: f,
-        SWAMP: 0,
-        TRAP: 0
+        SWAMP: lambda t: 0,
+        TRAP: lambda t: 0
     }
 }
 

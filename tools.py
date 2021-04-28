@@ -51,13 +51,7 @@ def get_cost(ls, role, offset):
     return 1 + sum([cost(*it, role, offset) for it in ls])
 
 def cost(obj, tm, role, offset):
-    if has_resource == 1 and obj == TRAP:
-        w, alpha = COST[role][-100]
-    elif obj == TRAP:
-        w, alpha = COST[role][-101]
-    else:
-        w, alpha = COST[role][obj]
-    return calc(w, alpha, offset + turn_number - tm)
+    return COST[role][obj](offset + turn_number - tm)
 
 def get_goal_cost(ls, role):
     return sum([goal_cost(*it, role) for it in ls])
