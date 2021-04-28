@@ -195,7 +195,6 @@ class AI:
         my_vision = copy.deepcopy(self.vision)
         for scalable in SCALABLE[role]:
             my_vision = self.scale(my_vision, scalable, SCALABLE[role][scalable])
-
         ant = self.game.ant
         x, y = ant.currentX, ant.currentY
         N = self.game.mapWidth
