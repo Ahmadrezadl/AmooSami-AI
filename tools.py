@@ -1,9 +1,11 @@
 import math
-from consts import BUILDINGS, ENEMY_BASE, ENTITIES, EMPTY, COST, GOAL_COST, INF, EMPTIES, NO_ANTS, RESOURCES, UNKNOWN
+from consts import BUILDINGS, ENEMY_BASE, ENTITIES, EMPTY, COST, GOAL_COST, INF, EMPTIES, NO_ANTS, RESOURCES, UNKNOWN , TRAP
 
 turn_number = 0
 allied_in_range=0
 enemy_in_range=0
+has_resource = 0
+last_resource = (-1,-1)
 
 def set_turn_number(tn):
     global turn_number
@@ -49,7 +51,12 @@ def get_cost(ls, role, offset):
     return 1 + sum([cost(*it, role, offset) for it in ls])
 
 def cost(obj, tm, role, offset):
-    w, alpha = COST[role][obj]
+    if has_resource == 1 and obj == TRAP:
+        w, alpha = COST[role][-100]
+    elif obj == TRAP:
+        w, alpha = COST[role][-101]
+    else:
+        w, alpha = COST[role][obj]
     return calc(w, alpha, offset + turn_number - tm)
 
 def get_goal_cost(ls, role):

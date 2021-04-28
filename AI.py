@@ -55,6 +55,7 @@ class AI:
         message_value: int = 0
         direction: int = Direction.CENTER.value
         ant = self.game.ant
+        print(ant.health)
         x = ant.currentX
         y = ant.currentY
         base_x = self.game.baseX
@@ -70,8 +71,19 @@ class AI:
                 self.vision.append(new_line)
             self.vision[self.game.mapWidth-base_x-1][self.game.mapHeight-base_y-1].append((ENEMY_BASE, self.turn_number))
 
+        cur = self.game.ant.visibleMap.cells[ant.currentX][ant.currentY]
+
+        if cur.resource_type == ResourceType.BREAD.value or cur.resource_type == ResourceType.GRASS.value:
+            tools.last_resource = (x,y)
+        if cur.type == CellType.TRAP and tools.has_resource == 1:
+            self.vision[tools.last_resource[0]][tools.last_resource[1]].append((WALL,self.turn_number))
+
         tools.allied_in_range = 0
         tools.enemy_in_range = 0
+        tools.has_resource = 1 if ant.currentResource and ant.currentResource.value > 0 else 0
+
+        # print(self.turn_number , " " , tools.has_resource)
+
 
         for i in range(self.game.mapWidth):
             for j in range(self.game.mapHeight):
@@ -80,6 +92,10 @@ class AI:
                     continue
                 if cell.type == CellType.WALL.value:
                     self.vision[i][j].append((WALL, self.turn_number))
+                elif cell.type == CellType.TRAP:
+                    self.vision[i][j].append((TRAP, self.turn_number))
+                elif cell.type == CellType.SWAMP:
+                    self.vision[i][j].append((SWAMP, self.turn_number))
                 elif cell.type != CellType.BASE.value and cell.type == CellType.BASE.value and (base_x != i or base_y != j): # what
                     self.vision[i][j].append((ENEMY_BASE, self.turn_number))
                 if cell.resource_type == ResourceType.BREAD.value:
