@@ -18,6 +18,8 @@ def beat(new_object, old_object):
         return True
     if old_object == WALL:
         return False
+    if old_object == TRAP or old_object == BAD_TRAP:
+        return False
     if new_object == old_object:
         return True
     if old_object in EMPTIES and new_object in EMPTIES:

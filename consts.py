@@ -39,7 +39,7 @@ def trap_for_ant(t):
 def bad_trap_for_ant(t):
     from tools import has_resource
     # print("salam" , has_resource)
-    return 10 if has_resource else 2000
+    return 10 if has_resource else 20000
 
 COST = {
     'ant': {
