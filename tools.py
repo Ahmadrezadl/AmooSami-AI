@@ -14,8 +14,10 @@ def set_turn_number(tn):
 def beat(new_object, old_object):
     if old_object == ENEMY_BASE:
         return True
-    if old_object == UNKNOWN or old_object == WALL:
+    if old_object == UNKNOWN:
         return True
+    if old_object == WALL:
+        return False
     if new_object == old_object:
         return True
     if old_object in EMPTIES and new_object in EMPTIES:
@@ -58,3 +60,9 @@ def get_goal_cost(ls, role):
 
 def goal_cost(obj, tm, role):
     return GOAL_COST[role][obj](turn_number - tm)
+
+def has_obj(fobj, ls):
+    for obj, tm in ls:
+        if obj == fobj:
+            return True
+    return False
