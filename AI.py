@@ -75,7 +75,7 @@ class AI:
 
         if cur.resource_type == ResourceType.BREAD.value or cur.resource_type == ResourceType.GRASS.value:
             tools.last_resource = (x,y)
-        if cur.type == CellType.TRAP and tools.has_resource == 1:
+        if cur.type == CellType.TRAP.value and tools.has_resource == 1:
             self.vision[tools.last_resource[0]][tools.last_resource[1]].append((WALL,self.turn_number))
 
         tools.allied_in_range = 0
@@ -130,7 +130,7 @@ class AI:
         # print("turn: ", self.turn_number)
         set_turn_number(self.turn_number)
         if ant.antType == AntType.SARBAAZ.value:
-            if self.turn_number == 0 and len(cell.ants) > 1:
+            if self.turn_number == 0 and len(cur.ants) > 1:
                 direction = random.choice([UP,DOWN,LEFT,RIGHT,CENTER])
             else:
                 direction = self.get_move('scorpion')
