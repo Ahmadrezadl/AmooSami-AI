@@ -19,6 +19,7 @@ class AI:
         try:
             self.turn_number = AI.turn_number
             self.vision = AI.vision
+            self.first_target = AI.first_target
         except:
             self.turn_number: int = -1
             self.vision = []
@@ -76,7 +77,8 @@ class AI:
         if cur.resource_type == ResourceType.BREAD.value or cur.resource_type == ResourceType.GRASS.value:
             tools.last_resource = (x,y)
         if cur.type == CellType.TRAP.value and tools.has_resource == 1:
-            self.vision[tools.last_resource[0]][tools.last_resource[1]].append((WALL,self.turn_number))
+            # self.vision[tools.last_resource[0]][tools.last_resource[1]].append((WALL,self.turn_number))
+            self.vision[x][y].append((WALL,self.turn_number))
 
         tools.allied_in_range = 0
         tools.enemy_in_range = 0
@@ -84,8 +86,10 @@ class AI:
 
         # print(self.turn_number , " " , tools.has_resource)
 
-
+        if self.turn_number == 0:
+            random_moves = []
         for i in range(self.game.mapWidth):
+            print(self.turn_number)
             for j in range(self.game.mapHeight):
                 cell = self.game.ant.visibleMap.cells[i][j]
                 if not cell:
@@ -93,11 +97,16 @@ class AI:
                 if cell.type == CellType.WALL.value:
                     self.vision[i][j].append((WALL, self.turn_number))
                 elif cell.type == CellType.TRAP.value:
+                    if self.turn_number == 0:
+                        random_moves.append(cell)
                     self.vision[i][j].append((TRAP, self.turn_number))
                 elif cell.type == CellType.SWAMP.value:
                     self.vision[i][j].append((SWAMP, self.turn_number))
                 elif cell.type != CellType.EMPTY and cell.type == CellType.BASE.value and (base_x != i or base_y != j): # what
                     self.vision[i][j].append((ENEMY_BASE, self.turn_number))
+                else:
+                    if self.turn_number == 0:
+                        random_moves.append(cell)
                 if cell.resource_type == ResourceType.BREAD.value:
                     self.vision[i][j].append((BREAD, self.turn_number))
                 elif cell.resource_type == ResourceType.GRASS.value:
@@ -127,6 +136,10 @@ class AI:
 
                 self.vision[i][j] = prune(self.vision[i][j])
 
+        if self.turn_number == 0:
+            print(random_moves)
+            self.first_target = random.choice(random_moves)
+            AI.first_target = self.first_target
         # print("turn: ", self.turn_number)
         set_turn_number(self.turn_number)
         if ant.antType == AntType.SARBAAZ.value:
@@ -173,6 +186,8 @@ class AI:
         N = self.game.mapWidth
         M = self.game.mapHeight
 
+        if role == "ant" and self.turn_number == 0 or self.turn_number == 1:
+            return self.first_target.x , self.first_target.y
         if ant.currentResource and ant.currentResource.value > 0:
             return self.game.baseX, self.game.baseY
         ret = (-1, -1)
