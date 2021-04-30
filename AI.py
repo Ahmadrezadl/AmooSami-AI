@@ -130,9 +130,15 @@ class AI:
         # print("turn: ", self.turn_number)
         set_turn_number(self.turn_number)
         if ant.antType == AntType.SARBAAZ.value:
-            direction = self.get_move('scorpion')
+            if self.turn_number == 0 and len(cell.ants) > 1:
+                direction = random.choice([UP,DOWN,LEFT,RIGHT,CENTER])
+            else:
+                direction = self.get_move('scorpion')
         elif ant.antType == AntType.KARGAR.value:
-            direction = self.get_move('ant')
+            # if self.turn_number == 0 or self.turn_number == 1:
+            #     direction = random.choice([UP,DOWN,LEFT,RIGHT,CENTER])
+            # else:
+                direction = self.get_move('ant')
 
         AI.vision = self.vision
         AI.turn_number = self.turn_number
