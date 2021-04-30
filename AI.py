@@ -59,7 +59,7 @@ class AI:
         x = ant.currentX
         y = ant.currentY
         base_x = self.game.baseX
-        base_y = self.game.baseX
+        base_y = self.game.baseY
         self.turn_number = self.turn_number + 1
         self.init_dirs()
         if not self.vision:
