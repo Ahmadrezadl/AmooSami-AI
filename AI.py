@@ -69,7 +69,7 @@ class AI:
                 for j in range(self.game.mapHeight):
                     new_line.append([(UNKNOWN, -1)])
                 self.vision.append(new_line)
-            self.vision[self.game.mapWidth-base_x-1][self.game.mapHeight-base_y-1].append((ENEMY_BASE, self.turn_number))
+            # self.vision[self.game.mapWidth-base_x-1][self.game.mapHeight-base_y-1].append((ENEMY_BASE, self.turn_number))
 
         cur = self.game.ant.visibleMap.cells[ant.currentX][ant.currentY]
 
@@ -96,7 +96,7 @@ class AI:
                     self.vision[i][j].append((TRAP, self.turn_number))
                 elif cell.type == CellType.SWAMP.value:
                     self.vision[i][j].append((SWAMP, self.turn_number))
-                elif cell.type != CellType.BASE.value and cell.type == CellType.BASE.value and (base_x != i or base_y != j): # what
+                elif cell.type != CellType.EMPTY and cell.type == CellType.BASE.value and (base_x != i or base_y != j): # what
                     self.vision[i][j].append((ENEMY_BASE, self.turn_number))
                 if cell.resource_type == ResourceType.BREAD.value:
                     self.vision[i][j].append((BREAD, self.turn_number))
@@ -237,6 +237,7 @@ class AI:
         
         # print(gx, gy)
         it = (gx, gy)
+        print(it)
         while par[it] != (x, y):
             # print(it)
             it = par[it]
