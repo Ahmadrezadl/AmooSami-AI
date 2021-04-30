@@ -90,8 +90,8 @@ class AI:
             tools.last_resource = (x,y)
         if cur.type == CellType.TRAP.value and tools.has_resource == 1:
             # self.vision[tools.last_resource[0]][tools.last_resource[1]].append((WALL,self.turn_number))
-            upd(x, y, WALL)
-            self.vision[x][y].append((WALL,self.turn_number))
+            upd(x, y, BAD_TRAP)
+            self.vision[x][y].append((BAD_TRAP,self.turn_number))
 
         tools.allied_in_range = 0
         tools.enemy_in_range = 0
@@ -212,7 +212,7 @@ class AI:
 
         go_home = ant.currentResource and ant.currentResource.value > 0
         for (obj, tm) in vision[x][y]:
-            if obj == WALL:
+            if obj == WALL or obj == BAD_TRAP:
                 go_home = True
 
         if role == "ant" and self.turn_number == 0 or self.turn_number == 1:

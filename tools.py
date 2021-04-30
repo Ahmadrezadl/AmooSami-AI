@@ -1,5 +1,5 @@
 import math
-from consts import BUILDINGS, ENEMY_BASE, ENTITIES, EMPTY, COST, GOAL_COST, INF, EMPTIES, NO_ANTS, RESOURCES, SWAMP, UNKNOWN , TRAP, WALL
+from consts import BAD_TRAP, BUILDINGS, ENEMY_BASE, ENTITIES, EMPTY, COST, GOAL_COST, INF, EMPTIES, NO_ANTS, RESOURCES, SWAMP, UNKNOWN , TRAP, WALL
 
 turn_number = 0
 allied_in_range=0
@@ -74,6 +74,8 @@ def decode(i, j, obj):
         offset = 50
     if obj == SWAMP:
         offset = 100
+    if obj == BAD_TRAP:
+        offset = 150
     f = chr(i + offset)
     return f+s
 
@@ -85,4 +87,6 @@ def encode(msg):
         obj = TRAP
     if ord(msg[1])//50 == 2:
         obj = SWAMP
+    if ord(msg[1])//50 == 3:
+        obj = BAD_TRAP
     return i, j, obj

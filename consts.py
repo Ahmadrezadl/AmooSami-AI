@@ -5,6 +5,7 @@ import tools
 
 TRAP = -2
 SWAMP = -3
+BAD_TRAP = -4
 
 UNKNOWN = -1
 WALL = 0
@@ -35,6 +36,11 @@ def trap_for_ant(t):
     # print("salam" , has_resource)
     return 2000 if has_resource else 10
 
+def bad_trap_for_ant(t):
+    from tools import has_resource
+    # print("salam" , has_resource)
+    return 10 if has_resource else 2000
+
 COST = {
     'ant': {
         UNKNOWN: lambda t: 20,
@@ -49,7 +55,8 @@ COST = {
         ENEMY_KARGAR: lambda t: 10,
         ENEMY_SARBAZ: lambda t: 2000 * math.exp(-1.5*t),
         SWAMP: lambda t: 50,
-        TRAP: trap_for_ant
+        TRAP: trap_for_ant,
+        BAD_TRAP: bad_trap_for_ant
     },
     'scorpion': {
         UNKNOWN: lambda t: 10,
@@ -65,6 +72,7 @@ COST = {
         ENEMY_SARBAZ: lambda t: 1000 * math.exp(-1.5 * t),
         SWAMP: lambda t: 50,
         TRAP: lambda t: 10,
+        BAD_TRAP: lambda t: 10
     }
 }
 
@@ -85,7 +93,8 @@ GOAL_COST = {
         ENEMY_KARGAR: lambda t: 0,
         ENEMY_SARBAZ: lambda t: -2000 * math.exp(-t),
         SWAMP: lambda t: -1000,
-        TRAP: lambda t: -100000
+        TRAP: lambda t: -100000,
+        BAD_TRAP: lambda t: -100000
     },
     'scorpion': {
         UNKNOWN: lambda t: 20,
@@ -100,7 +109,8 @@ GOAL_COST = {
         ENEMY_KARGAR: lambda t: 200 * math.exp(-0.5*t),
         ENEMY_SARBAZ: f,
         SWAMP: lambda t: 0,
-        TRAP: lambda t: 0
+        TRAP: lambda t: 0,
+        BAD_TRAP: lambda t: 0
     }
 }
 
