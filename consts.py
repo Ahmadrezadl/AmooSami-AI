@@ -28,6 +28,7 @@ EMPTIES = {EMPTY, NO_ANTS}
 
 #const values
 INF = 1e10
+MAX_CHARS = 32
 
 def trap_for_ant(t):
     from tools import has_resource

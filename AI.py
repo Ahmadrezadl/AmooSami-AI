@@ -1,4 +1,4 @@
-from tools import get_cost, get_goal_cost, goal_cost, prune, set_turn_number
+from tools import get_cost, get_goal_cost, goal_cost, has_obj, prune, set_turn_number, decode, encode
 from Model import *
 from consts import *
 from typing import *
@@ -74,10 +74,23 @@ class AI:
 
         cur = self.game.ant.visibleMap.cells[ant.currentX][ant.currentY]
 
+        for chat in self.game.chatBox.allChats:
+            msg = chat.text
+            for i in range(0, len(msg), 2):
+                cx, cy, obj = encode(msg[i:i+2])
+                if not has_obj(obj, self.vision[cx][cy]):
+                    self.vision[cx][cy].append((obj, chat.turn))
+
+        new_objs = []
+        def upd(i, j, obj):
+            if not has_obj(obj, self.vision[i][j]):
+                new_objs.append((i, j, obj))
+
         if cur.resource_type == ResourceType.BREAD.value or cur.resource_type == ResourceType.GRASS.value:
             tools.last_resource = (x,y)
         if cur.type == CellType.TRAP.value and tools.has_resource == 1:
             # self.vision[tools.last_resource[0]][tools.last_resource[1]].append((WALL,self.turn_number))
+            upd(x, y, WALL)
             self.vision[x][y].append((WALL,self.turn_number))
 
         tools.allied_in_range = 0
@@ -88,19 +101,22 @@ class AI:
 
         if self.turn_number == 0:
             random_moves = []
+        
         for i in range(self.game.mapWidth):
-            print(self.turn_number)
             for j in range(self.game.mapHeight):
                 cell = self.game.ant.visibleMap.cells[i][j]
                 if not cell:
                     continue
                 if cell.type == CellType.WALL.value:
+                    upd(i, j, WALL)
                     self.vision[i][j].append((WALL, self.turn_number))
                 elif cell.type == CellType.TRAP.value:
+                    upd(i, j, TRAP)
                     if self.turn_number == 0:
                         random_moves.append(cell)
                     self.vision[i][j].append((TRAP, self.turn_number))
                 elif cell.type == CellType.SWAMP.value:
+                    upd(i, j, SWAMP)
                     self.vision[i][j].append((SWAMP, self.turn_number))
                 elif cell.type != CellType.EMPTY and cell.type == CellType.BASE.value and (base_x != i or base_y != j): # what
                     self.vision[i][j].append((ENEMY_BASE, self.turn_number))
@@ -155,6 +171,13 @@ class AI:
 
         AI.vision = self.vision
         AI.turn_number = self.turn_number
+        
+        message = ""
+        message_value = 1
+        for i, j, obj in new_objs:
+            message += decode(i, j, obj)
+        if len(message) > MAX_CHARS:
+            message = message[:MAX_CHARS]
         return message, message_value, direction
     
     def dij(self, start, vision, dis, cnt, par, role):

@@ -1,5 +1,5 @@
 import math
-from consts import BUILDINGS, ENEMY_BASE, ENTITIES, EMPTY, COST, GOAL_COST, INF, EMPTIES, NO_ANTS, RESOURCES, UNKNOWN , TRAP, WALL
+from consts import BUILDINGS, ENEMY_BASE, ENTITIES, EMPTY, COST, GOAL_COST, INF, EMPTIES, NO_ANTS, RESOURCES, SWAMP, UNKNOWN , TRAP, WALL
 
 turn_number = 0
 allied_in_range=0
@@ -66,3 +66,23 @@ def has_obj(fobj, ls):
         if obj == fobj:
             return True
     return False
+
+def decode(i, j, obj):
+    s = chr(j)
+    offset = 0
+    if obj == TRAP:
+        offset = 50
+    if obj == SWAMP:
+        offset = 100
+    f = chr(i + offset)
+    return f+s
+
+def encode(msg):
+    j = ord(msg[1])
+    i = ord(msg[0])%50
+    obj = WALL
+    if ord(msg[0])//50 == 1:
+        obj = TRAP
+    if ord(msg[1])//50 == 2:
+        obj = SWAMP
+    return i, j, obj
