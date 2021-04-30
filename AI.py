@@ -161,7 +161,7 @@ class AI:
         seen = {}
         ls = []
         root = start
-        dis[root] = get_cost(vision[root[0]][root[1]], role, 0)
+        dis[root] = 0 # get_cost(vision[root[0]][root[1]], role, 0)
         par[root] = (-1, -1)
         cnt[root] = 0
         heapq.heappush(ls, (dis[root], root))
@@ -181,14 +181,20 @@ class AI:
                     par[npos] = cur
                     heapq.heappush(ls, (dis[npos], npos))
     
-    def get_goal(self, vision,dis, cnt, cnt_from_base, role):
+    def get_goal(self, vision, dis, cnt, cnt_from_base, role):
         ant = self.game.ant
+        x, y = ant.currentX, ant.currentY
         N = self.game.mapWidth
         M = self.game.mapHeight
 
+        go_home = ant.currentResource and ant.currentResource.value > 0
+        for (obj, tm) in vision[x][y]:
+            if obj == WALL:
+                go_home = True
+
         if role == "ant" and self.turn_number == 0 or self.turn_number == 1:
             return self.first_target.x , self.first_target.y
-        if ant.currentResource and ant.currentResource.value > 0:
+        if role == "ant" and go_home:
             return self.game.baseX, self.game.baseY
         ret = (-1, -1)
         mx = -INF

@@ -1,5 +1,5 @@
 import math
-from consts import BUILDINGS, ENEMY_BASE, ENTITIES, EMPTY, COST, GOAL_COST, INF, EMPTIES, NO_ANTS, RESOURCES, UNKNOWN , TRAP
+from consts import BUILDINGS, ENEMY_BASE, ENTITIES, EMPTY, COST, GOAL_COST, INF, EMPTIES, NO_ANTS, RESOURCES, UNKNOWN , TRAP, WALL
 
 turn_number = 0
 allied_in_range=0
@@ -14,7 +14,7 @@ def set_turn_number(tn):
 def beat(new_object, old_object):
     if old_object == ENEMY_BASE:
         return True
-    if old_object == UNKNOWN:
+    if old_object == UNKNOWN or old_object == WALL:
         return True
     if new_object == old_object:
         return True
