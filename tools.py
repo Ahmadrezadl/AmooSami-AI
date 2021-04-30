@@ -85,8 +85,8 @@ def encode(msg):
     obj = WALL
     if ord(msg[0])//50 == 1:
         obj = TRAP
-    if ord(msg[1])//50 == 2:
+    if ord(msg[0])//50 == 2:
         obj = SWAMP
-    if ord(msg[1])//50 == 3:
+    if ord(msg[0])//50 == 3:
         obj = BAD_TRAP
     return i, j, obj
